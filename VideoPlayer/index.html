@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ReactJS Video Player</title>
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.0/react.js"></script>-->
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.0/react-dom.js"></script>-->
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.6.15/browser.js"></script>-->
+    <script type="text/javascript" src="http://fb.me/react-with-addons-0.13.3.js"></script>
+    <script type="text/javascript" src="http://fb.me/JSXTransformer-0.12.0.js"></script>
+    <script type="text/jsx">
+        var PLAYER_ID = "player",
+            playList = [
+                "https://embedwistia-a.akamaihd.net/deliveries/a32647367d6e73c9078c9438473e649599e366d6/file.mp4",
+                "https://embedwistia-a.akamaihd.net/deliveries/d27fa553f7eca7ce74728e2a0bfdb4a959279ded/file.mp4"
+            ];
+
+        var Player = React.createClass({
+            componentDidMount: function () {
+                document.getElementById(PLAYER_ID).addEventListener('ended', this.props.onEnded);
+            },
+            componentWillUnmount: function () {
+                document.getElementById(PLAYER_ID).removeEventListener('ended', this.props.onEnded);
+            },
+            render: function () {
+                return <video id={PLAYER_ID} src={this.props.src} controls autoPlay width="854" height="480"></video>;
+
+            }
+        });
+
+        var PlayerContainer = React.createClass({
+            getInitialState: function(){
+                return {
+                    current: 0
+                }
+            },
+            onEnded: function () {
+                var newCurrent = this.state.current + 1;
+
+                if( newCurrent >= this.props.playlist.length) {
+                    newCurrent = 0;
+                }
+
+                console.log("Video new current index: " + newCurrent);
+                this.setState({
+                    current: newCurrent
+                });
+            },
+            render: function () {
+                var videoURL = this.props.playlist[this.state.current];
+
+                return <Player src={videoURL} onEnded={this.onEnded}/>;
+            }
+        });
+
+        React.render(<PlayerContainer playlist={playList}/>, document.body);
+    </script>
+</head>
+<body>
+<div id='content'></div>
+
+</body>
+</html>
