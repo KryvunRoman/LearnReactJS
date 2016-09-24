@@ -1,6 +1,3 @@
-console.log(React);
-console.log(ReactDOM);
-
 var my_news = [
   {
     author: 'Саша Печкин',
@@ -71,9 +68,6 @@ var News = React.createClass({
             counter: 0
         };
     },
-    onTotalNewsClick: function(){
-        this.setState({counter: ++this.state.counter})
-    },
     render: function() {
         var data = this.props.data;
         var newsTemplate;
@@ -94,8 +88,7 @@ var News = React.createClass({
             <div className="news">
                 {newsTemplate}
                 <strong 
-                    className={'news__count ' + (data.length > 0 ? '':'none') }
-                    onClick={this.onTotalNewsClick}>
+                    className={'news__count ' + (data.length > 0 ? '':'none') }>
                     Всего новостей: {data.length}
                  </strong>
                 <hr />
@@ -104,15 +97,41 @@ var News = React.createClass({
     }
 });
 
+var TestInput = React.createClass({
+    getInitialState: function(){
+        return {
+            fieldValue: ''
+        }
+    },
+    onChangeHandler: function(e){
+        this.setState({fieldValue: e.target.value});
+    },
+    onBtnClickHandler: function(){
+        alert(this.state.fieldValue);
+    },
+    render: function(){
+        return (
+            <div>
+                <input type="text" className='test-input' 
+                    value={this.state.fieldValue} 
+                    onChange={this.onChangeHandler} 
+                    placeholder='введите значение' />
+                <button type="button" onClick={this.onBtnClickHandler}>Показать alert</button>
+            </div>
+        );
+    }
+});
+
 var App = React.createClass({
-  render: function() {
-    return (
-      <div className="app">
-        <h3>Новости</h3>
-        <News data = {my_news} /> {/* удалили data = {my_news} */}
-      </div>
-    );
-  }
+    render: function() {
+        return (
+            <div className="app">
+            <h3>Новости</h3>
+            <TestInput />  {/* добавили вывод компонента */}
+            <News data = {my_news} /> {/* удалили data = {my_news} */}
+            </div>
+        );
+    }
 });
 
 ReactDOM.render(
