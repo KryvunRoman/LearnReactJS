@@ -35,7 +35,7 @@ var Article = React.createClass({
     readmoreClick: function(e) {
         e.preventDefault();
         this.setState({visible: true}, function() {
-          alert('Состояние изменилось');
+          console.log('Состояние изменилось');
         });
     },
     render: function(){
@@ -43,6 +43,8 @@ var Article = React.createClass({
         text = this.props.data.text,
         bigText = this.props.data.bigText,
         visible = this.state.visible;
+        
+        console.log('render',this); //добавили console.log
         
         return(
             <div className="article">
@@ -61,33 +63,45 @@ var Article = React.createClass({
 });
     
 var News = React.createClass({
-  xpropTypes: {
-    data: React.PropTypes.array.isRequired
-  },
-  render: function() {
-    var data = this.props.data;
-    var newsTemplate;
+    xpropTypes: {
+        data: React.PropTypes.array.isRequired
+    },
+    getInitialState: function(){
+        return {
+            counter: 0
+        };
+    },
+    onTotalNewsClick: function(){
+        this.setState({counter: ++this.state.counter})
+    },
+    render: function() {
+        var data = this.props.data;
+        var newsTemplate;
 
-    if (data.length > 0) {
-      newsTemplate = data.map(function(item, index) {
+        if (data.length > 0) {
+            newsTemplate = data.map(function(item, index) {
+                return (
+                    <div key={index}>
+                        <Article data={item} />
+                    </div>
+                )
+            })
+        } else {
+            newsTemplate = <p>К сожалению новостей нет</p>
+        }
+
         return (
-            <div key={index}>
-                <Article data={item} />
+            <div className="news">
+                {newsTemplate}
+                <strong 
+                    className={'news__count ' + (data.length > 0 ? '':'none') }
+                    onClick={this.onTotalNewsClick}>
+                    Всего новостей: {data.length}
+                 </strong>
+                <hr />
             </div>
-        )
-      })
-    } else {
-      newsTemplate = <p>К сожалению новостей нет</p>
+        );
     }
-
-    return (
-      <div className="news">
-        {newsTemplate}
-        <strong className={'news__count ' + (data.length > 0 ? '':'none') }>Всего новостей: {data.length}</strong>
-        <hr />
-      </div>
-    );
-  }
 });
 
 var App = React.createClass({
