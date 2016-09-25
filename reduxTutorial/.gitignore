@@ -1,0 +1,102 @@
+.DS_Store
+*.log
+node_modules
+build
+*.node
+components
+coverage
+*.orig
+.idea
+sandbox
+test/out-fixtures/*
+test/watch-*.txt
+gulp.1
+
+
+Thumbs.db
+
+# ignore jenkins build info
+/build.prop
+
+# ignore node_modules created by grunt, but not more deeply-nested node_modules
+/node_modules
+/npm-debug.log
+
+# ignore compiled files
+/dist
+/src/.index.html
+/src/styles/brackets.min.css
+/src/styles/brackets.min.css.map
+
+# ignore everything in the dev extension directory EXCEPT the README
+# (so that the directory is non-empty and can be in git)
+/src/extensions/dev/*
+!/src/extensions/dev/README
+
+/src/extensions/disabled
+
+# ignore .disabled file for default extensions
+/src/extensions/default/*/.disabled
+
+#OSX .DS_Store files
+.DS_Store
+
+# unit test working directory
+/test/results
+/test/temp
+
+# Netbeans
+/nbproject
+
+# PhpStorm
+.idea
+
+# Files that can be automatically downloaded that we don't want to ship with our builds
+/src/extensibility/node/node_modules/request/tests/
+
+
+
+# Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and Webstorm
+# Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
+
+# User-specific stuff:
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/dictionaries
+.idea/vcs.xml
+.idea/jsLibraryMappings.xml
+
+# Sensitive or high-churn files:
+.idea/dataSources.ids
+.idea/dataSources.xml
+.idea/dataSources.local.xml
+.idea/sqlDataSources.xml
+.idea/dynamic.xml
+.idea/uiDesigner.xml
+
+# Gradle:
+.idea/gradle.xml
+.idea/libraries
+
+# Mongo Explorer plugin:
+.idea/mongoSettings.xml
+
+## File-based project format:
+*.iws
+
+## Plugin-specific files:
+
+# IntelliJ
+/out/
+
+# mpeltonen/sbt-idea plugin
+.idea_modules/
+
+# JIRA plugin
+atlassian-ide-plugin.xml
+
+# Crashlytics plugin (for Android Studio and IntelliJ)
+com_crashlytics_export_strings.xml
+crashlytics.properties
+crashlytics-build.properties
+fabric.properties
