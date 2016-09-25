@@ -1,3 +1,7 @@
+'use strict';
+
+window.ee = new EventEmitter();
+
 var my_news = [
   {
     author: 'Саша Печкин',
@@ -72,9 +76,24 @@ var Add = React.createClass({
   },
   onBtnClickHandler: function(e) {
     e.preventDefault();
+    
+    var textEl = ReactDOM.findDOMNode(this.refs.text);
+      
     var author = ReactDOM.findDOMNode(this.refs.author).value;
     var text = ReactDOM.findDOMNode(this.refs.text).value;
-    alert(author + '\n' + text);
+    
+    //alert(author + '\n' + text);
+      
+    var item = [{
+        author: author,
+        text: text,
+        bigText: '...'
+    }];
+
+    window.ee.emit('News.add', item);
+      
+    textEl.value = '';
+    this.setState({textIsEmpty: true});
   },
   onCheckRuleClick: function(e) {
     this.setState({agreeNotChecked: !this.state.agreeNotChecked}); //устанавливаем значение в state
@@ -124,12 +143,12 @@ var Add = React.createClass({
         </label>
 
         <button
-          className='add__btn'
-          onClick={this.onBtnClickHandler}
-          ref='alert_button'
-          disabled={agreeNotChecked || authorIsEmpty || textIsEmpty}
-          >
-          Показать alert
+            className='add__btn'
+            onClick={this.onBtnClickHandler}
+            ref='alert_button'
+            disabled={agreeNotChecked || authorIsEmpty || textIsEmpty}
+        >
+            Добавить новость
         </button>
       </form>
     );
@@ -233,12 +252,34 @@ var UncontrolledInput = React.createClass({
 });
 
 var App = React.createClass({
+    getInitialState: function() {
+        return {
+            news: my_news
+        };
+    },
+    componentDidMount: function() {
+        /* Слушай событие "Создана новость"
+        если событие произошло, обнови this.state.news
+        */
+      var self = this;
+        
+      window.ee.addListener('News.add', function(item) {
+        var nextNews = item.concat(self.state.news);
+        self.setState({news: nextNews});
+      });
+    },
+    componentWillUnmount: function() {
+        /* Больше не слушай событие "Создана новость" */
+        window.ee.removeListener('News.add');
+    },
     render: function() {
+        console.log('render');
+        
         return (
             <div className="app">
-            <h3>Новости</h3>
-            <Add />  {/* добавили вывод компонента */}
-            <News data = {my_news} /> {/* удалили data = {my_news} */}
+                <Add />  {/* добавили вывод компонента */}
+                <h3>Новости</h3>
+                <News data = {this.state.news} /> {/* удалили data = {my_news} */}
             </div>
         );
     }
