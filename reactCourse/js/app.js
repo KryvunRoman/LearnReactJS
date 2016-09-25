@@ -97,7 +97,7 @@ var News = React.createClass({
     }
 });
 
-var TestInput = React.createClass({
+var ControlledInput = React.createClass({
     getInitialState: function(){
         return {
             fieldValue: ''
@@ -115,8 +115,34 @@ var TestInput = React.createClass({
                 <input type="text" className='test-input' 
                     value={this.state.fieldValue} 
                     onChange={this.onChangeHandler} 
-                    placeholder='введите значение' />
-                <button type="button" onClick={this.onBtnClickHandler}>Показать alert</button>
+                    placeholder='введите значение'
+                />
+                <button type="button" onClick={this.onBtnClickHandler}>
+                    Показать alert
+                </button>
+            </div>
+        );
+    }
+});
+
+
+var UncontrolledInput = React.createClass({
+    onBtnClickHandler: function() {
+        console.log(this.refs);
+        alert(ReactDOM.findDOMNode(this.refs.myTestInput).value);
+    },
+    render: function() {
+        return (
+            <div>
+                <input
+                  className='test-input'
+                  defaultValue=''
+                  placeholder='введите значение'
+                  ref='myTestInput'
+                />
+                <button type="button" onClick={this.onBtnClickHandler} ref='alert_button'>
+                    Показать Uncontroll alert
+                </button>
             </div>
         );
     }
@@ -127,7 +153,8 @@ var App = React.createClass({
         return (
             <div className="app">
             <h3>Новости</h3>
-            <TestInput />  {/* добавили вывод компонента */}
+            <ControlledInput />
+            <UncontrolledInput />  {/* добавили вывод компонента */}
             <News data = {my_news} /> {/* удалили data = {my_news} */}
             </div>
         );
